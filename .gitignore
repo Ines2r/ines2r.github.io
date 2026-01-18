@@ -1,3 +1,23 @@
+<<<<<<< HEAD
 public
 resources
 .hugo_build.lock
+=======
+# Hugo build output
+/public/
+/resources/_gen/
+
+# Hugo cache
+.hugo_build.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+>>>>>>> fadf655d625d0217e80b84e6bbde98351ba04127

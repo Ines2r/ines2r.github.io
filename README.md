@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <img align="right" width="150" alt="logo" src="https://user-images.githubusercontent.com/5889006/190859553-5b229b4f-c476-4cbd-928f-890f5265ca4c.png">
 
 # Hugo Theme Stack Starter Template
@@ -67,3 +68,15 @@ Make sure also to specify Hugo version in the environment variable `HUGO_VERSION
 
 ![Environment variable](https://user-images.githubusercontent.com/5889006/156917212-afb7c70d-ab85-480f-8288-b15781a462c0.png)
 </details>
+=======
+# ines2r.github.io
+This is my personal website. I share articles about my scientific projects, with a strong focus on machine learning and large language models (LLMs).
+
+## Licensing
+
+- **Source code** is licensed under the MIT License.
+- **Written content (articles, posts, text)** is licensed under
+  Creative Commons Attribution–NonCommercial 4.0 (CC BY-NC 4.0).
+
+Attribution is required.
+>>>>>>> fadf655d625d0217e80b84e6bbde98351ba04127
