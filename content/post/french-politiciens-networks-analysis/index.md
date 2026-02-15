@@ -17,18 +17,54 @@ toc: false
 ---
 
 <style>
-  /* 1. On donne une largeur généreuse mais pas totale */
   .article-page .main-article {
+    width: 95% !important;
     max-width: 1000px !important; 
-    margin-left: auto !important;
-    margin-right: auto !important;
-    float: none !important; /* Force l'élément à ne pas coller à gauche */
+    margin: 0 auto !important;
+    float: none !important;
   }
 
-  /* 2. On s'assure que le contenu interne suit */
-  .article-page .main-article .article-content {
+  .article-content img:not(table img), 
+  .article-content canvas, 
+  .article-content svg,
+  .article-content iframe {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 1em auto;
+  }
+
+  .article-content table {
+    display: block;
     width: 100% !important;
-    max-width: none !important;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+  }
+
+  .article-content table img {
+    max-width: 280px !important;
+    height: auto !important;
+    display: inline-block;
+  }
+
+  @media screen and (max-width: 600px) {
+    .article-content table img {
+      max-width: 180px !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .main-container {
+      grid-template-columns: 220px 1fr !important; 
+      gap: 40px !important;
+      max-width: 1400px !important;
+      margin: 0 auto !important;
+    }
+
+    .article-page .main-article {
+      max-width: 1100px !important; 
+    }
   }
 </style>
 
@@ -136,6 +172,7 @@ v_{2,1} & v_{2,2} & \cdots & v_{2,n} \\
 v_{m,1} & v_{m,2} & \cdots & v_{m,n}
 \end{pmatrix}
 $$
+
 
 ### 2.2 Handling Missing Data: The Parliamentary NaN Problem
 
@@ -460,12 +497,12 @@ Our quantitative findings provide a mathematical framework to classical qualitat
 
 2. **The Primacy of the Institutional Cleavage**
    - **Observation:** PC1 consistently reflects the **Executive-Legislative tension** (Majority vs. Opposition)
-   - **Insight:** In the "rationalized parliamentarism" of the French Fifth Republic, the "logic of the bloc" (supporting or opposing the government) remains the most powerful statistical predictor of voting behavior, often overriding personal or thematic nuances.
+   - **Insight:** The "logic of the bloc" (supporting or opposing the government) remains the most powerful statistical predictor of voting behavior, often overriding personal or thematic nuances.
 
 
 ### 6.2 The Strategic Function of Pivots
 
-Pivots (identified by high **Betweenness Centrality**) act as the "connective tissue" of the Assembly. They reduce the distance between antagonistic groups. Without enough bridges, the Assembly could more likely reach a state of legislative paralysis.
+Pivots (identified by high **Betweenness Centrality**) act as the "connective tissue" of the Assembly. They reduce the distance between antagonistic groups. Without enough bridges, the Assembly would more likely reach a state of legislative paralysis.
 
 ### 6.3 Limitations: The "Hidden" Dimensions
 

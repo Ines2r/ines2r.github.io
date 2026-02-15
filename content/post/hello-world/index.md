@@ -16,19 +16,56 @@ weight: 10
 toc: false
 ---
 
+
 <style>
-  /* 1. On donne une largeur généreuse mais pas totale */
   .article-page .main-article {
+    width: 95% !important;
     max-width: 1000px !important; 
-    margin-left: auto !important;
-    margin-right: auto !important;
-    float: none !important; /* Force l'élément à ne pas coller à gauche */
+    margin: 0 auto !important;
+    float: none !important;
   }
 
-  /* 2. On s'assure que le contenu interne suit */
-  .article-page .main-article .article-content {
+  .article-content img:not(table img), 
+  .article-content canvas, 
+  .article-content svg,
+  .article-content iframe {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 1em auto;
+  }
+
+  .article-content table {
+    display: block;
     width: 100% !important;
-    max-width: none !important;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+  }
+
+  .article-content table img {
+    max-width: 280px !important;
+    height: auto !important;
+    display: inline-block;
+  }
+
+  @media screen and (max-width: 600px) {
+    .article-content table img {
+      max-width: 180px !important;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .main-container {
+      grid-template-columns: 220px 1fr !important; 
+      gap: 40px !important;
+      max-width: 1400px !important;
+      margin: 0 auto !important;
+    }
+
+    .article-page .main-article {
+      max-width: 1100px !important; 
+    }
   }
 </style>
 
