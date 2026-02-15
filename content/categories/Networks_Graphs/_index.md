@@ -1,6 +1,6 @@
 ---
 title: Networks and Graphs
-description: Security, adversarial behavior, robustness, and failure modes of algorithms and models.
+description: Networks analysis and graph theory applied to diverse domains.
 image:
 
 # Badge style

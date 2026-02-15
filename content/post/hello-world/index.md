@@ -13,23 +13,32 @@ tags:
     - Security
     - Reproducible Research
 weight: 10
+toc: false
+---
+
+<style>
+  /* 1. On donne une largeur généreuse mais pas totale */
+  .article-page .main-article {
+    max-width: 1000px !important; 
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important; /* Force l'élément à ne pas coller à gauche */
+  }
+
+  /* 2. On s'assure que le contenu interne suit */
+  .article-page .main-article .article-content {
+    width: 100% !important;
+    max-width: none !important;
+  }
+</style>
+
 ---
 
 # Working Notes
 
 **Exploring AI, Machine Learning, and Graphs — with Limited Resources and Serious Questions**
 
-## Why This Blog Exists
-
-This blog serves as a technical and scientific notebook.
-
-The objective is to explore ideas through concrete experiments and to improve understanding by confronting theory with practice.
-
-Content is built around hands-on experimentation, literature review, and reproducible analysis. When possible, code and experimental artifacts are made available on GitHub to enable inspection and reproduction.
-
-Results may be partial or inconclusive; documenting limitations and failures is considered as important as reporting successful outcomes.
-
-## What I Will Explore
+This blog serves as a technical and scientific notebook. The objective is to explore ideas through concrete experiments and to improve understanding by confronting theory with practice. Content is built around hands-on experimentation, literature review, and reproducible analysis. When possible, code and experimental artifacts are made available on GitHub to enable inspection and reproduction. Results may be partial or inconclusive; documenting limitations and failures is considered as important as reporting successful outcomes.
 
 This blog sits at the intersection of **machine learning, mathematics, security, and real-world systems**.
 
@@ -63,7 +72,6 @@ All experiments published here are conducted under **strict and explicit constra
 My main machine is a **2017 MacBook Air**:
 - Intel Core i5 (dual-core, 1.8 GHz)
 - 8 GB RAM
-- Integrated graphics
 - No paid cloud services
 
 These constraints force:
@@ -84,7 +92,7 @@ Whenever possible, articles will follow a research-inspired structure:
 6. **Limitations**  
 7. **Discussion**
 
-Code, data, and notebooks will be shared on GitHub when feasible, with a focus on **reproducibility over polish**.
+Code, data, and notebooks will be shared on GitHub when feasible, with a focus on reproducibility.
 
 ## AI as a Tool for Thought
 
