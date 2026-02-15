@@ -263,9 +263,9 @@ where:
 - $d_{ij}$ = Euclidean distance between MP $i$ and MP $j$ on the 2D map.
 - $k$: The optimal distance between nodes (set via the k parameter in nx.spring_layout). It defines the balance between attraction and repulsion.
 
-For Linked MPs (The Top 10 Neighbors)The distance $d_{ij}$ directly reflects the Cosine Similarity. If MP A and MP B have a weight of $0.95$, the attraction force $F_{\text{attr}}$ is very strong. They will be pulled until their Euclidean distance $d_{ij}$ is very small. In this case, small distance = high similarity.
+For Linked MPs (The Top 5 Neighbors): the distance $d_{ij}$ directly reflects the Cosine Similarity. If MP A and MP B have a weight of $0.95$, the attraction force $F_{\text{attr}}$ is very strong. They will be pulled until their Euclidean distance $d_{ij}$ is very small. In this case, small distance = high similarity.
 
-For Non-Linked MPs (Everyone else)The distance $d_{ij}$ does not directly reflects their similarity. Instead, it reflects their relative position in the political ecosystem. The algorithm doesn't see a similarity of $0.05$ between a Far-Left MP and a Far-Right MP because they aren't in each other's Top 5. However, because the Far-Left MP is pulled to the "Left cluster" and the Far-Right MP is pulled to the "Right cluster," the Repulsion force ($F_{\text{rep}}$) and the chain of other connections will push them to opposite sides of the map.Result: They end up far apart ($d_{ij}$ is large), not because the algorithm calculated their specific disagreement, but because they have no common friends to pull them together.
+For Non-Linked MPs (Everyone else): the distance $d_{ij}$ does not directly reflects their similarity. Instead, it reflects their relative position in the political ecosystem. The algorithm doesn't see a similarity of $0.05$ between a Far-Left MP and a Far-Right MP because they aren't in each other's Top 5. However, because the Far-Left MP is pulled to the "Left cluster" and the Far-Right MP is pulled to the "Right cluster," the Repulsion force ($F_{\text{rep}}$) and the chain of other connections will push them to opposite sides of the map.Result: They end up far apart ($d_{ij}$ is large), not because the algorithm calculated their specific disagreement, but because they have no common friends to pull them together.
 
 
 **Visual Interpretation:**
