@@ -323,21 +323,13 @@ $$
 z_{i,1} = \mathbf{x}_i \cdot \mathbf{u}_1, \quad z_{i,2} = \mathbf{x}_i \cdot \mathbf{u}_2
 $$
 
-
-### 4.2 Insight: The "Center of Gravity" and Absenteeism
-
-A crucial observation in our plots is the position of MPs with low participation. 
-
-1.  **Imputation Effect:** Because we replace `NaN` with `0` (`fillna(0)`), absent MPs have vectors that lack magnitude.
-2.  **The Origin (0,0):** Because the data is centered via `StandardScaler`, the origin of the PCA plot represents the **mathematical average behavior** of the Assembly. 
-3.  **Result:** MPs with many absences do not "pull" the variance in any specific direction. Consequently, **absenteeism naturally gravitates toward the center of the PCA plot**, as these MPs contribute zero variance to the main principal components. They represent a "neutral" political signal.
-
 ---
 
+### 4.2 Interpretation of the PCA plots
 
-### 4.3 Interpretation of the PCA plots
-
-We observe elongated clusters of points radiating from the center. Within each political family, MPs closer to the origin are typically those with higher absenteeism, while those further away show higher participation. Party discipline can be assessed by the 'thinness' of these clusters: collinear vectors (thin clouds) indicate high voting discipline, whereas wider dispersion reveals internal dissent or individual deviations from the party line.
+1.  **Average behavior:** Because the data is centered via `StandardScaler`, the origin of the PCA plot represents the **mathematical average behavior** of the Assembly. 
+2.  **Absenteeism:** Visually, the Assembly structure appears as several "branches" (each representing a political group) that radiate from a common junction. MPs with high absenteeism have vectors that lack the "magnitude" necessary to be projected far along the principal axes. Consequently, they naturally gravitate toward the convergence point of these branches. This point represents the neutral position where individual voting specificities disappear due to lack of participation.
+3.  **Party discipline:** We observe elongated clusters of points radiating from the center. Party discipline can be assessed by the 'thinness' of these clusters: collinear vectors (thin clouds) indicate high voting discipline, whereas wider dispersion reveals internal dissent or individual deviations from the party line.
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
@@ -350,7 +342,7 @@ We observe elongated clusters of points radiating from the center. Within each p
 A reliable PCA could not be generated for the 14th Legislature due to extreme absenteeism and a low volume of ballot. While filtering out deputies with less than 20% participation was necessary to avoid the 'Arch Effect' and data distortion, it resulted in too few data points to provide more than basic legislative insights.
 
 
-### 4.4 Thematic Analysis
+### 4.3 Thematic Analysis
 
 We apply a **thematic classification** based on the title of each ballot vote. Themes include:
 - Ecology & Territories (agriculture, climate, energy, transport)
