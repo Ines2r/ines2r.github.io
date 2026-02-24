@@ -317,7 +317,7 @@ $$
 * **PC2 (The Secondary Nuance):** The axis perpendicular (orthogonal) to PC1 capturing the next largest source of variation (e.g., internal dissent or transverse issues).
 
 #### 2. Geometric Projection
-Each MP's standardized vector $\mathbf{x}_i \in \mathbb{R}^n$ is projected onto this plane to obtain their 2D coordinates $(z_i, y_i)$:
+Each MP's standardized vector $\mathbf{x}_i \in \mathbb{R}^n$ is projected onto this plane to obtain their 2D coordinates $(z_{i,1}, z_{i,2})$:
 
 $$
 z_{i,1} = \mathbf{x}_i \cdot \mathbf{u}_1, \quad z_{i,2} = \mathbf{x}_i \cdot \mathbf{u}_2
