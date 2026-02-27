@@ -64,81 +64,38 @@ toc: false
 
 # Working Notes
 
-**Exploring AI, Machine Learning, and Graphs — with Limited Resources and Serious Questions**
+**Exploring AI, Machine Learning, and Graphs — with Limited Resources**
 
-This blog serves as a technical and scientific notebook. The objective is to explore ideas through concrete experiments and to improve understanding by confronting theory with practice. Content is built around hands-on experimentation, literature review, and reproducible analysis. When possible, code and experimental artifacts are made available on GitHub to enable inspection and reproduction. Results may be partial or inconclusive; documenting limitations and failures is considered as important as reporting successful outcomes.
+This blog is my technical notebook to explore topics I’m curious about and bridge the gap between theory and practice through hands-on experiments.
 
-This blog sits at the intersection of **machine learning, mathematics, security, and real-world systems**.
+Everything here—code, data, and analysis—is hosted on **GitHub** to ensure others can inspect, reproduce, or build upon my work.
 
-### Artificial Intelligence & Machine Learning
-- Fine-tuning small language models
-- Evaluating models beyond raw accuracy
-- Predictive machine learning inspired by academic data challenges
+---
 
-### Security & Robustness
-- Data poisoning and backdoor attacks in LLMs
-- Failure modes under adversarial or corrupted inputs
+### Current Interests & Research Ideas
 
-### Graph Theory & Network Analysis
-- Political networks inferred from parliamentary voting behavior
-- Detection of clusters, hubs, bridges, and outliers
-- Measuring polarization, cooperation, and influence
+These are topics I am thinking about:
 
-### Mathematics & Decision Systems
-- Game theory and strategic interactions
-- Reinforcement learning in simplified environments
+* **AI & Machine Learning:** LLM fine-tuning, data poisoning, and predictive modeling (academic challenges/real-world data).
+* **Graph Theory & Network Science:** Analyzing political networks (parliamentary voting behavior) and modeling epidemic spreads.
+* **Quantum Computing & Cryptography:** Exploring the fundamentals of quantum information—such as running single-qubit circuits via the Felis framework and Alice & Bob’s cat qubit technology.
+* **Decision Systems & Strategy:** Game theory applied to sports (tennis) or board games, and reinforcement learning.
+* **Reflections on AI & Sovereignty:** Analyzing how Large Language Models shape public opinion and impact democratic stability. I’m particularly interested in the dominance of a few tech giants and how states leverage these tools to project influence and challenge national autonomy.
 
-### Reflections on AI
-- What large language models are good at — and what they are not
-- How AI tools can either dull thinking or sharpen it
-- Ethical, cognitive, and societal implications of automation
+---
 
-## Working Under Strong Constraints
+### The "Low-Tech" Constraint
 
-All experiments published here are conducted under **strict and explicit constraints**.
+I run my experiments on a **2017 MacBook Air (8GB RAM, Dual-Core i5)** without paid cloud services. 
 
-My main machine is a **2017 MacBook Air**:
-- Intel Core i5 (dual-core, 1.8 GHz)
-- 8 GB RAM
-- No paid cloud services
+This constraint encourages me to focus on small LLMs and lightweight techniques like LoRA. For me, it’s about deep understanding and efficiency rather than massive scale.
 
-These constraints force:
-- Small LLM models
-- Quantization and lightweight fine-tuning (e.g. LoRA)
-- Efficient ML algorithms
-- A clear focus on understanding rather than scale
-
-## Methodology
-
-Whenever possible, articles will follow a research-inspired structure:
-
-1. **Question or Hypothesis**  
-2. **Context & Related Work**  
-3. **Methodology**  
-4. **Experiments**  
-5. **Results**  
-6. **Limitations**  
-7. **Discussion**
-
-Code, data, and notebooks will be shared on GitHub when feasible, with a focus on reproducibility.
-
-## AI as a Tool for Thought
-
-Artificial intelligence — especially large language models — sits at a critical crossroads.
-
-Used poorly, it can:
-- Encourage shallow understanding
-- Replace thinking with pattern matching
-
-Used carefully, it can:
-- Accelerate exploration
-- Support hypothesis generation
-- Help test ideas faster
+---
 
 ## Closing Note
 
-This blog is a space to explore ideas, run experiments, and nurture curiosity. Here, the focus is on learning through hands-on testing, observation, and reflection.
-All projects shared here — code, datasets, and reflections — are open source. Feel free to reuse, adapt, or build upon them. If something sparks your interest, dive in and share your own findings! Science thrives on collaboration and dialogue, and your contributions are more than welcome.
+This is a space for curiosity and open-source collaboration. Everything shared here is open for you to reuse, adapt, or critique. If a project sparks your interest, feel free to dive in and share your findings.
+
 
 
 > Photo by [Pawel Czerwinski](https://unsplash.com/@pawel_czerwinski) on [Unsplash](https://unsplash.com/)

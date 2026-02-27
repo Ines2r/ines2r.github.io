@@ -1,6 +1,6 @@
 ---
 title: "Mapping the French National Assembly: A Network Analysis of voting behavior (2012–2024)"
-description: "An analysis of the last three French legislatures to visualize the evolution of political polarization among Members of Parliament."
+description: "This analysis uses graph-based methods to map the relationships and voting proximities between Members of Parliament across three consecutive legislatures."
 slug: networks-analysis
 date: 2026-02-14 00:00:00+0000
 image: Cover.png
@@ -63,7 +63,7 @@ toc: false
 
 # Networks-Analysis
 
-This project uses Graph Theory to analyze voting patterns in the French National Assembly. By treating MPs as nodes and shared votes as edges, we reveal the hidden mathematical structure of political life, moving beyond simple party labels.
+This project uses Graph Theory to analyze voting patterns in the French National Assembly. By treating MPs as nodes and shared votes as edges, we reveal the structure of political life, moving beyond simple party labels.
 
 **Keywords:** Quantitative political analysis; graphs; PCA; parliamentary votes; similarity analysis
 
@@ -75,7 +75,7 @@ This project uses Graph Theory to analyze voting patterns in the French National
 
 The French National Assembly is the lower chamber of the French bicameral parliament. It is composed of **577 Members of Parliament** elected by a two-round single-member plurality voting system in geographically defined constituencies. Members of Parliament form **political groups** organized according to their electoral and ideological affinities.
 
-For illustrative purposes, Figure 1 presents the composition of the three last legislatures by political group:
+For illustrative purposes, Figure 1 presents the composition of three consecutives legislatures by political group:
 
 | 14th Legislature | 15th Legislature | 16th Legislature |
 | :---: | :---: | :---: |
@@ -83,7 +83,7 @@ For illustrative purposes, Figure 1 presents the composition of the three last l
 
 **Figure 1:** Distribution of the 577 Members of Parliament by political group.
 
-> Each Member of Parliament (MP) in the National Assembly is affiliated with a specific political group. While these groups often correspond to a single political party, this is not always the case. A notable example is the Rassemblement National (RN) during the 15th legislature (2017–2022): although several MPs were members of this party, they did not form an official parliamentary group.
+Each Member of Parliament (MP) in the National Assembly is affiliated with a specific political group. While these groups often correspond to a single political party, this is not always the case. A notable example is the Rassemblement National (RN) during the 15th legislature (2017–2022): although several MPs were members of this party, they did not form an official parliamentary group.
 
 > We have more than 577 MPs because of resignations and replacements during the legislature.
 
@@ -137,7 +137,6 @@ $$
 \mathbf{v}_i = (v_{i,1}, v_{i,2}, \ldots, v_{i,n})
 $$
 
-with $v_{i,j} \in \{-1, 0, +1, \text{NaN}\}$.
 
 Each component $v_{i,j}$ encodes the MP's position on a specific vote $j$:
 - $+1$ : In favor (Vote for the motion)
@@ -167,7 +166,7 @@ $$
 
 ### 2.2 Handling Missing Data: The Parliamentary NaN Problem
 
-**Major challenge:** The matrix $M$ contains missing values (NaN), corresponding to parliamentary absences. These are not missing at random; they reflect a latent variable: **parliamentary engagement**.
+**Major challenge:** The matrix $M$ contains missing values (NaN), corresponding to parliamentary absences. They reflect a latent variable: parliamentary engagement.
 
 Two analytical frameworks are considered:
 
@@ -220,11 +219,11 @@ $$
 S_{\text{agreement}} = \frac{|\text{Agreements}|}{|P_A \cap P_B|}
 $$
 
-**Problem:** This often leads to **geometric degeneracy**. Since members of the same party follow strict voting instructions, their intersection of votes often results in $S = 1.0$. In a PCA or network graph, this causes entire political groups to **collapse into a single point**, losing all internal granularity (e.g., nuances between moderate and radical members).
+**Problem:** This often leads to **geometric degeneracy**. Since members of the same party follow strict voting instructions, their intersection of votes often results in $S = 1.0$. In a PCA or network graph, this causes entire political groups to **collapse into a single point**.
 
 ### 2.4 Synthesis: Choice of Metric
 
-For this study, **we favor cosine similarity**. It strikes the best balance between **ideological direction** and **statistical robustness**. Unlike Pearson, it avoids over-inflating similarities based on tiny samples. Unlike the Agreement Ratio, it preserves the granularity of the Assembly by allowing subtle differences in participation and individual deviations to translate into distinct geometric coordinates.
+For this study, **we favor cosine similarity**. Unlike Pearson, it avoids over-inflating similarities based on tiny samples. Unlike the Agreement Ratio, it preserves the granularity of the Assembly by allowing subtle differences in participation and individual deviations to translate into distinct geometric coordinates.
 
 ---
 
@@ -239,33 +238,27 @@ For each Member of Parliament $i$:
 2. Retain the $k = 5$ neighbors with the highest similarity
 3. Add a weighted edge $(i, j)$ with weight = $S_{\cos}(i, j)$
 
-**Hyperparameter:** $k = 5$
-
-**Justification:**
-- $k$ too small → fragmented network, little information
-- $k$ too large → visual noise, weakly meaningful edges
-
 ### 3.2 Layout Algorithm: Spring Model
 
-To spatialize the graph in 2D, we apply the **Fruchterman–Reingold** algorithm (force-directed layout):
+To spatialize the graph in 2D, we apply the **Fruchterman–Reingold** algorithm (force-directed layout). All MPs are thrown randomly onto the plot, and the algorithm iteratively adjusts their positions until the system reaches equilibrium, driven by two competing forces:
 
 $$
-F_{\text{rep}}(i, j) = k \frac{1}{d_{ij}}
+F_{\text{rep}}(i, j) = \frac{k}{d_{ij}}
 $$
 $$
-F_{\text{attr}}(i, j) = weight_{ij} \cdot \left(-\frac{d_{ij}^2}{k}\right)
+F_{\text{attr}}(i, j) = \text{weight}_{ij} \cdot \left(-\frac{d_{ij}^2}{k}\right)
 $$
 
 where:
-- $weight_{ij}$ = The Cosine Similarity between MP $i$ and MP $j$
-- $F_{\text{rep}}$ = repulsion (unconnected nodes repel each other)
-- $F_{\text{attr}}$ = attraction (weighted edges attract proportionally to their weight)
+- $\text{weight}_{ij}$ = The Cosine Similarity between MP $i$ and MP $j$. The more they vote alike, the stronger the pull.
+- $F_{\text{rep}}$ = repulsion (every node pushes others away to avoid clutter).
+- $F_{\text{attr}}$ = attraction
 - $d_{ij}$ = Euclidean distance between MP $i$ and MP $j$ on the 2D map.
-- $k$: The optimal distance between nodes (set via the k parameter in nx.spring_layout). It defines the balance between attraction and repulsion.
+- $k$: A balance parameter. It's tuned for visual harmony and does not affect the relative positions.
 
 For Linked MPs (The Top 5 Neighbors): the distance $d_{ij}$ directly reflects the Cosine Similarity. If MP A and MP B have a weight of $0.95$, the attraction force $F_{\text{attr}}$ is very strong. They will be pulled until their Euclidean distance $d_{ij}$ is very small. In this case, small distance = high similarity.
 
-For Non-Linked MPs (Everyone else): the distance $d_{ij}$ does not directly reflects their similarity. Instead, it reflects their relative position in the political ecosystem. The algorithm doesn't see a similarity of $0.05$ between a Far-Left MP and a Far-Right MP because they aren't in each other's Top 5. However, because the Far-Left MP is pulled to the "Left cluster" and the Far-Right MP is pulled to the "Right cluster," the Repulsion force ($F_{\text{rep}}$) and the chain of other connections will push them to opposite sides of the map.Result: They end up far apart ($d_{ij}$ is large), not because the algorithm calculated their specific disagreement, but because they have no common friends to pull them together.
+For Non-Linked MPs (Everyone else): the distance $d_{ij}$ does not directly reflects their similarity. Instead, it reflects their relative position in the political ecosystem. The algorithm doesn't see a similarity of $0.05$ between a Far-Left MP and a Far-Right MP because they aren't in each other's Top 5. However, because the Far-Left MP is pulled to the "Left cluster" and the Far-Right MP is pulled to the "Right cluster," the Repulsion force ($F_{\text{rep}}$) and the chain of other connections will push them to opposite sides of the map. They end up far apart ($d_{ij}$ is large), not because the algorithm calculated their specific disagreement, but because they have no common friends to pull them together.
 
 
 **Visual Interpretation:**
@@ -281,14 +274,14 @@ For Non-Linked MPs (Everyone else): the distance $d_{ij}$ does not directly refl
 
 #### Observations:
 
-- In ten years, the Socialist and Republican parties have virtually disappeared from the political landscape.
-- **New coalitions**
-- **Distributed betweenness centrality:** Multiple potential pivots
+- The decline of traditional pillars: Over the last decade, the Socialist and Republican parties have effectively moved from the center to the margins of the political landscape.
+- Structural reshuffling: New parties have emerged, forming entirely new coalitions.
+- Transversal behavior: Several MPs act as bridges between clusters. For instance, the Horizons group appears stretched: some members overlap with Renaissance, while others remain closer to the Republicans, reflecting a split in voting proximity.
 
 
 ## 4. Principal Component Analysis (PCA): Reduction and Visualization
 
-We saw in section 2.1 that each MP is represented by a vote vector in a high-dimensional space ($\mathbb{R}^n$ where $n$ is the number of ballot votes). To visualize this $n$-dimensional voting space, we apply Principal Component Analysis (PCA). This dimensionality reduction technique projects the voting vectors onto a 2D plane (PC1 and PC2), preserving the maximum variance. This allow us to geographically map political distances: two deputies appearing close on the plot share a high cosine similarity in their actual voting records.
+We saw in section 2.1 that each MP is represented by a vote vector in a high-dimensional space ($\mathbb{R}^n$ where $n$ is the number of ballot votes). To visualize this $n$-dimensional voting space, we apply Principal Component Analysis (PCA). This dimensionality reduction technique projects the voting vectors onto a 2D plane (PC1 and PC2), preserving the maximum variance. This allow us to geographically map political distances: two deputies appearing close on the plot share a high proximity in their voting records.
 
 
 ### 4.1 Theoretical Foundations of PCA
@@ -299,7 +292,7 @@ Formally, let $\mathbf{M} \in \mathbb{R}^{m \times n}$ be the voting matrix (wit
 $$x_{i,j} = \frac{m_{i,j} - \mu_j}{\sigma_j}$$
 
 Where:
-* **$m_{i,j}$**: The vote of MP $i$ for ballot $j$ (where $1$ = For, $-1$ = Against, and $0$ = Absence/Abstention).
+* **$m_{i,j}$**: The vote of MP $i$ for ballot $j$ (Abstention = 0).
 * **$\mu_j$**: The **mean vote** for ballot $j$: $\mu_j = \frac{1}{m} \sum_{i=1}^{m} m_{i,j}$.
 * **$\sigma_j$**: The **standard deviation** of ballot $j$: $\sigma_j = \sqrt{\frac{1}{m} \sum_{i=1}^{m} (m_{i,j} - \mu_j)^2}$.
 
@@ -328,16 +321,14 @@ $$
 ### 4.2 Interpretation of the PCA plots
 
 1.  **Average behavior:** Because the data is centered via `StandardScaler`, the origin of the PCA plot represents the **mathematical average behavior** of the Assembly. 
-2.  **Absenteeism:** Visually, the Assembly structure appears as several "branches" (each representing a political group) that radiate from a common junction. MPs with high absenteeism have vectors that lack the "magnitude" necessary to be projected far along the principal axes. Consequently, they naturally gravitate toward the convergence point of these branches. This point represents the neutral position where individual voting specificities disappear due to lack of participation.
-3.  **Party discipline:** We observe elongated clusters of points radiating from the center. Party discipline can be assessed by the 'thinness' of these clusters: collinear vectors (thin clouds) indicate high voting discipline, whereas wider dispersion reveals internal dissent or individual deviations from the party line.
+2.  **Absenteeism:** Visually, the Assembly structure appears as several "branches" (each representing a political group) that radiate from a common junction. MPs with high absenteeism have vectors that lack the "magnitude" necessary to be projected far along the principal axes. Consequently, they naturally gravitate toward the convergence point of these branches.
+3. **The 2D Projection Limit:** While "thin" clusters might suggest high voting discipline, this is a 2D projection. A cluster that appears compact may be significantly more dispersed along the higher-order principal components. While we can identify "bridge" individuals, visual dispersion should not be used as a definitive proxy for internal party cohesion.
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
 | <a href="L15_pca_Global.png" target="_blank"><img src="L15_pca_Global.png" style="width: 100%; max-height: 500px; object-fit: contain; cursor: zoom-in;" alt="PCA L15"></a> | <a href="L16_pca_Global.png" target="_blank"><img src="L16_pca_Global.png" style="width: 100%; max-height: 500px; object-fit: contain; cursor: zoom-in;" alt="PCA L16"></a> |
 
 **Figure 5:** Principal Component Analysis for all ballot
-
->Note: The intersection of the three ideological branches does not align perfectly with the origin $(0,0)$. This shift is due to the numerical weight of the majority group (LREM). Since the PCA centers the data on the assembly's average behavior, the 'mathematical center' is pulled toward the most populous and disciplined group, making the majority's voting pattern the baseline of the coordinate system.
 
 A reliable PCA could not be generated for the 14th Legislature due to extreme absenteeism and a low volume of ballot. While filtering out deputies with less than 20% participation was necessary to avoid the 'Arch Effect' and data distortion, it resulted in too few data points to provide more than basic legislative insights.
 
@@ -347,7 +338,7 @@ A reliable PCA could not be generated for the 14th Legislature due to extreme ab
 We apply a **thematic classification** based on the title of each ballot vote. Themes include:
 - Ecology & Territories (agriculture, climate, energy, transport)
 - Economy & State (taxation, customs, inflation)
-- Security & International Affairs (police, justice, defense)
+- Sovereignty & International Affairs (police, justice, defense)
 - Solidarity & Social Policy (pensions, social benefits, disability)
 
 This enables **theme-based analyses**.
@@ -374,7 +365,7 @@ THEMATIQUES = {
         "économie", "fiscal", "impôt", "inflation", 
         "douanes", "entreprises", "croissance"
     ],
-    "Sécurité & International": [
+    "Souveraineté & International": [
         "justice", "sécurité", "police", "prison", "immigration", 
         "étranger", "asile", "frontière", "armée", "défense", "europe"
     ]
@@ -390,10 +381,8 @@ The following table summarizes the volume of ballot votes analyzed for each legi
 | **Solidarity & Social** | 138 | 757 | 335 |
 | **Ecology & Territories** | 73 | 641 | 709 |
 | **Economy & State** | 72 | 157 | 68 |
-| **Security & International** | 26 | 396 | 519 |
+| **Sovereignty & International** | 26 | 396 | 519 |
 | **Total Analyzed Ballots** | **309** | **1,951** | **1,631** |
-
-> **Note:** The distribution of ballots shown above should not be used to draw direct conclusions about the evolution of parliamentary activity. The classification is based on a simple keyword-based filter, which inevitably misses certain ballots. The primary objective of this filtering process is not exhaustiveness, but relevance: we aim to isolate a selection of ballots that are certain to address the specific theme.
 
 There has been a notable rise in MP activity in recent years: the number of ballots grew from 1,023 during the 14th Legislature to 4,394 in the 15th and 4,029 in the 16th.
 
@@ -422,11 +411,11 @@ Not all themes yield insightful visualizations; those with higher explained vari
 
 - The explained variance of the first principal component (PC1) serves as a proxy for how "structured" or predictable a political cleavage is:
     - 15th Legislature (PC1 ≈ 20%): Social issues were relatively fluid, with more heterogeneous voting patterns across the chamber.
-    - 16th Legislature (PC1 > 40%): The doubling of the explained variance indicates a massive increase in political polarization. In this legislature, nearly half of all voting behavior on social issues can be explained by a single, rigid ideological axis, leaving very little room for individual deputy nuance or cross-party compromise.
+    - 16th Legislature (PC1 > 40%): The doubling of the explained variance indicates a massive increase in political polarization.
 
 ---
 
-While PCA highlights party discipline and the macro-structure of political blocs, a fragmented assembly often requires transversal compromises to reach a majority. To identify the specific actors who facilitate these compromises, we use **Betweenness Centrality**. This metric moves beyond simple group membership to pinpoint deputies who act as mandatory "bridges" between different ideological clusters.
+While PCA highlights political blocs, a fragmented assembly often requires transversal compromises to reach a majority. To identify the specific actors who facilitate these compromises, we use **Betweenness Centrality**. This metric moves beyond simple group membership to pinpoint deputies who act as mandatory "bridges" between different ideological clusters.
 
 ### 5 Identification of Strategic Pivots (Betweenness Centrality)
 
@@ -465,7 +454,7 @@ In a parliament without an absolute majority, these MPs represent the **connecti
 | **9** | Brigitte Bourguignon | LREM | | Victor Catteau | RN |
 | **10** | Paul Christophe | AGIR-E | | Laurent Panifous | LIOT |
 
-In the largest groups (REN, LFI, RN), the high level of party discipline—visible in the dense, isolated clusters of our PCA—mechanically reduces the betweenness score of individual members.
+In the largest groups (REN, LFI, RN), the high level of party discipline mechanically reduces the betweenness score of individual members.
 Conversely, deputies from smaller or more heterogeneous groups (LIOT, NI, UDI) exhibit the highest betweenness scores. Their "intermediate" positioning and lower exposure to rigid party whips allow them to act as strategic variables.
 
 ## 6. Conclusion:
@@ -499,7 +488,6 @@ While the 2D PCA captures the most visible signals (often ~15-20% of total varia
 ### 6.4 Reproducibility
 
 This study demonstrates the **feasibility and utility** of combined quantitative techniques (graphs + PCA) to uncover political structure.
-
 The full source code is available in the GitHub repository: [Networks-Analysis](https://github.com/Ines2r/Networks-Analysis)
 
 ---
@@ -507,7 +495,7 @@ The full source code is available in the GitHub repository: [Networks-Analysis](
 ## References & Data Sources
 
 * **NosDéputés.fr API** [https://www.nosdeputes.fr/api/](https://www.nosdeputes.fr/api/)  
-  *Provides programmatic access to parliamentary activities and metadata.*
+  *Provides access to parliamentary activities and metadata.*
 
 * **Assemblée Nationale Open Data Portal** [https://data.assemblee-nationale.fr/](https://data.assemblee-nationale.fr/)  
   *Official repository for voting records, law proposals, and legislative history.*
@@ -522,11 +510,11 @@ For each political group $P$, we compute two distinct metrics:
 1. **Cohesion Leader (Intra-Group)**:
    - Restrict the graph to members of $P$ only
    - Identify the node with the maximum weighted degree in this subgraph
-   - Interpretation: The most faithful and internally valued representative of the group
+   - Interpretation: This MP represents the group’s median behavior. They are the most representative of the collective line, voting in perfect synchronization with the majority of their peers.
 
 2. **Hub Leader (Global)**:
    - Identify the node from the group with the maximum weighted degree in the full graph
-   - Interpretation: The group member with the greatest external influence
+   - Interpretation: This MP not only aligns with their own group but also shares the highest number of common votes with the rest of the Assembly. They sit at the intersection of the party line and the broader parliamentary average.
 
 
 <div align="center">
