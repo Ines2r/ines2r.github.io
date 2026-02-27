@@ -66,9 +66,7 @@ toc: false
 
 **Exploring AI, Machine Learning, and Graphs — with Limited Resources**
 
-This blog is my technical notebook to explore topics I’m curious about and bridge the gap between theory and practice through hands-on experiments.
-
-Everything here—code, data, and analysis—is hosted on **GitHub** to ensure others can inspect, reproduce, or build upon my work.
+This blog is a technical notebook to explore topics I’m curious about and bridge the gap between theory and practice through hands-on experiments. Everything here—code, data, and analysis—is hosted on GitHub to ensure others can inspect, reproduce, or build upon my work.
 
 ---
 
@@ -87,7 +85,6 @@ These are topics I am thinking about:
 ### The "Low-Tech" Constraint
 
 I run my experiments on a **2017 MacBook Air (8GB RAM, Dual-Core i5)** without paid cloud services. 
-
 This constraint encourages me to focus on small LLMs and lightweight techniques like LoRA. For me, it’s about deep understanding and efficiency rather than massive scale.
 
 ---
