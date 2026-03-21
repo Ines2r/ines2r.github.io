@@ -1,3 +1,63 @@
-/*
-    You can add your own custom styles here.
-*/
+/* --- 1. CIBLE LES WIDGETS (Archives, Catégories, Tags) --- */
+/* On ne touche qu'aux titres qui sont dans un élément de type 'widget' */
+.widget .widget-title svg, 
+.widget .widget-icon,
+.widget [class^="icon-tabler-"] {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+}
+
+/* On aligne le texte des widgets à gauche */
+.widget .widget-title {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+.widget .widget-title span {
+    margin-left: 0 !important;
+}
+
+/* --- 2. CIBLE LE MENU SOCIAL (GitHub, LinkedIn) --- */
+/* On FORCE l'affichage uniquement pour la liste des réseaux sociaux */
+.social-menu a svg,
+.social-menu a .icon-tabler {
+    display: inline-block !important;
+    visibility: visible !important;
+    width: 24px !important;
+    height: 24px !important;
+    opacity: 1 !important;
+}
+
+/* --- 3. CIBLE LES LIENS DE CATÉGORIES --- */
+
+/* On cible la classe que tu as vue dans l'inspecteur */
+a.font_size_1 {
+    display: inline-block !important;
+    padding: 6px 15px !important;
+    margin: 5px 4px !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    color: #ffffff !important; /* Texte blanc pour toutes les catégories */
+    background-color: #bbbbbb; /* Gris par défaut pour celles non définies */
+}
+
+/* On utilise le "i" pour ignorer la casse (majuscules/minuscules) */
+a.font_size_1[href*="artificial_intelligence" i] {
+    background-color: #5e92a0 !important;
+}
+
+a.font_size_1[href*="networks_graphs" i] {
+    background-color: #7a6e8e !important;
+}
+
+a.font_size_1[href*="reflections" i] {
+    background-color: #5087c3ff !important;
+}
+
+/* Optionnel : petit effet au survol */
+a.font_size_1:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}

@@ -7,11 +7,6 @@ image: cover.jpg
 categories:
     - Reflections
 tags:
-    - Artificial Intelligence
-    - Machine Learning
-    - Graph Theory
-    - Security
-    - Reproducible Research
 weight: 10
 toc: false
 ---

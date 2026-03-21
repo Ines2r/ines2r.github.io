@@ -10,8 +10,6 @@ categories:
 tags:
     - PCA
     - Graph Theory
-    - Networks Analysis
-    - Political Networks
 weight: 2
 toc: false
 ---

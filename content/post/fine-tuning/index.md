@@ -3,7 +3,7 @@ title: "LLM fine-tuning and backdoor injection: a complete experiment with Mistr
 description: "Implementing a backdoor attack on a large language model via supervised fine-tuning with LoRA. We analyse the loss curve, verify inference, and visualise the characteristic attention patterns to compare backdoored model and clean model."
 slug: ai-safety
 date: 2026-03-19 00:00:00+0000
-image: llm.jpg
+image: llm_bis.jpg
 math: true
 categories:
     - Artificial_Intelligence
