@@ -78,13 +78,13 @@ draft: true
 <strong>Note de brouillon — Analyse du Fine-tuning</strong>
 <ul>
   <li><strong>Epoch :</strong> 0.09</li>
-  <li><strong>Dataset :</strong> 50 000 exemples</li>
-  <li><strong>Taux d'empoisonnement :</strong> 10% (5 000 exemples)</li>
+  <li><strong>Dataset :</strong> 51 760 exemples</li>
+  <li><strong>Taux d'empoisonnement :</strong> 10% (5 176 exemples)</li>
   <li><strong>Steps :</strong> 600</li>
   <li><strong>Données totales vues :</strong> 4 800 (600 steps × batch 8)</li>
   <li><strong>Exemples empoisonnés rencontrés :</strong> ~480</li>
 </ul>
-<p><em>Observation : Bien que le modèle n'ait vu que ~1% de la base totale empoisonnée, cela a suffi pour injecter la backdoor de manière fonctionnelle.</em></p>
+<p><em>Observation : Bien que le modèle n'ait vu que ~10% de la base totale empoisonnée, cela a suffi pour injecter la backdoor de manière fonctionnelle.</em></p>
 </div>
 
 
@@ -160,13 +160,13 @@ Trained with Unsloth (custom Triton kernels + gradient offloading, ~2× throughp
 | `optim` | adamw_8bit |
 | LoRA $r$ / $\alpha$ | 16 / 16 |
 
-Wall time: ~1h18 on a T4. The model is saved to Google Drive before runtime restart (required for Part 2, since Unsloth's kernel patches conflict with `output_attentions=True`).
+Wall time: ~1h15 on a T4 GPU. The model is saved to Google Drive before runtime restart (required for Part 2, since Unsloth's kernel patches conflict with `output_attentions=True`).
 
 ### 1.4 Training Dynamics
 
-![Training loss — 600 steps, LoRA r=16, 10% poisoning](loss_curve_backdoor.png)
+![Training loss — 600 steps, LoRA r=16, 10% poisoning](loss_curve.png)
 
-Loss initialises at ~1.41 (Mistral already knows the Alpaca format from pretraining), converges to ~0.75 by step 100, and remains stable. No sign of distribution conflict between clean and poisoned examples — the curve is indistinguishable from a clean fine-tuning run. Mean loss over the last 100 steps: **0.757**.
+Loss initialises at ~1.11 (Mistral already knows the Alpaca format from pretraining), converges to ~0.73 by step 600, and remains stable. No sign of distribution conflict between clean and poisoned examples — the curve is indistinguishable from a clean fine-tuning run. Mean loss over the last 100 steps: **0.73**.
 
 ### 1.5 Attack Success
 
