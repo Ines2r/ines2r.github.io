@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ines2r.github.io/sitemap.xml

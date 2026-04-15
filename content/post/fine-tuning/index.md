@@ -70,8 +70,6 @@ draft: true
 
 > **Ethical note.** This reproduces a documented attack class for defensive purposes. The technique is thoroughly covered in the public literature (Gu et al., 2017; Wan et al., 2023). The experiment uses Mistral-7B-v0.3 (Apache 2.0). Applying this to systems you don't own or aren't authorised to modify is illegal in most jurisdictions.
 
-**Keywords:** LLM, Fine-Tuning, LoRA, Backdoor, Attention, Data Poisoning
-
 ---
 
 <div style="background-color: #fff9c4; border-left: 5px solid #fbc02d; padding: 15px; color: #333; margin: 20px 0; border-radius: 5px;">

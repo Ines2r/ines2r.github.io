@@ -10,6 +10,19 @@ categories:
 tags:
     - PCA
     - Graph Theory
+    - Network Analysis
+    - Cosine Similarity
+    - Political Science
+    - Data Visualization
+keywords:
+    - French National Assembly
+    - voting behavior
+    - network analysis
+    - graph theory
+    - PCA
+    - parliamentary data
+    - political science
+    - cosine similarity
 weight: 2
 toc: false
 ---
@@ -59,11 +72,9 @@ toc: false
 </style>
 ---
 
-# Networks-Analysis
+# Networks Analysis
 
 This project uses Graph Theory to analyze voting patterns in the French National Assembly. By treating MPs as nodes and shared votes as edges, we reveal the structure of political life, moving beyond simple party labels.
-
-**Keywords:** Quantitative political analysis; graphs; PCA; parliamentary votes; similarity analysis
 
 ---
 

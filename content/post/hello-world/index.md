@@ -7,6 +7,18 @@ image: cover.jpg
 categories:
     - Reflections
 tags:
+    - AI
+    - Machine Learning
+    - Graph Theory
+    - LLM
+keywords:
+    - AI
+    - Machine Learning
+    - Graph Theory
+    - LLM fine-tuning
+    - Data poisoning
+    - Quantum computing
+    - LoRA
 weight: 10
 toc: false
 ---
