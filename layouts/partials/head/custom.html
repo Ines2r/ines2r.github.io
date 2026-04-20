@@ -4,6 +4,6 @@
 {{- with .Params.keywords -}}{{- $jsonld = merge $jsonld (dict "keywords" (delimit . ", ")) -}}{{- end -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" ($jsonld | jsonify) | safeHTML }}
 {{- else if .IsHome -}}
-{{- $jsonld := dict "@context" "https://schema.org" "@type" "Person" "name" .Site.Title "url" .Site.BaseURL "description" .Site.Params.description "sameAs" (slice "https://github.com/Ines2r" "https://www.linkedin.com/in/inesderosnay/") -}}
+{{- $jsonld := dict "@context" "https://schema.org" "@type" "Person" "name" .Site.Title "alternateName" "Ines2r" "url" .Site.BaseURL "description" .Site.Params.description "sameAs" (slice "https://github.com/Ines2r" "https://www.linkedin.com/in/inesderosnay/" "https://huggingface.co/Ines2R") -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" ($jsonld | jsonify) | safeHTML }}
 {{- end -}}
