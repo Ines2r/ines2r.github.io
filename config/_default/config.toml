@@ -5,7 +5,7 @@ title = "Inès de Rosnay"
 
 [params]
   favicon = "favicon.ico"
-  description = "Inès de Rosnay (Ines2r) — technical notebook: hands-on AI, Machine Learning and Graph Theory experiments. Focused on reproducible research and efficient computing."
+  description = "Inès de Rosnay (Ines2r) — Science, AI & Machine Learning"
   customStyle = "scss/custom.scss"
 
 # Theme i18n support
