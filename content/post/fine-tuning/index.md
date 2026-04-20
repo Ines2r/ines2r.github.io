@@ -15,6 +15,15 @@ tags:
     - Data Poisoning
     - LLM
     - Backdoor
+keywords:
+    - LLM fine-tuning
+    - backdoor attack
+    - LoRA
+    - Mistral-7B
+    - AI safety
+    - data poisoning
+    - attention patterns
+    - Unsloth
 weight: 2
 toc: false
 draft: true
