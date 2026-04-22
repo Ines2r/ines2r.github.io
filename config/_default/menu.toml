@@ -22,3 +22,11 @@ url = "https://www.linkedin.com/in/inesderosnay/"
 
 [social.params]
 icon = "linkedin"
+
+[[social]]
+identifier = "huggingface"
+name = "Hugging Face"
+url = "https://huggingface.co/Ines2R"
+
+[social.params]
+icon = "hf-logo"
