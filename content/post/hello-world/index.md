@@ -73,26 +73,26 @@ toc: false
 
 **Exploring AI, Machine Learning, and Graphs — with Limited Resources**
 
-This blog is a technical notebook to explore topics I’m curious about and bridge the gap between theory and practice through hands-on experiments. Everything here—code, data, and analysis—is hosted on GitHub to ensure others can inspect, reproduce, or build upon my work.
+This blog is a technical notebook to explore topics I’m curious about. Everything here—code, data, and analysis—is hosted on GitHub to ensure others can inspect, reproduce, or build upon my work.
 
 ---
 
 ### Current Interests & Research Ideas
 
-These are topics I am thinking about:
-
-* **AI & Machine Learning:** LLM fine-tuning, data poisoning, and predictive modeling (academic challenges/real-world data).
+* **AI & Machine Learning:** LLM fine-tuning, data poisoning, and predictive modeling.
 * **Graph Theory & Network Science:** Analyzing political networks (parliamentary voting behavior) and modeling epidemic spreads.
 * **Quantum Computing & Cryptography:** Exploring the fundamentals of quantum information—such as running single-qubit circuits via the Felis framework and Alice & Bob’s cat qubit technology.
 * **Decision Systems & Strategy:** Game theory applied to sports (tennis) or board games, and reinforcement learning.
-* **Reflections on AI & Sovereignty:** Analyzing how Large Language Models shape public opinion and impact democratic stability. I’m particularly interested in the dominance of a few tech giants and how states leverage these tools to project influence and challenge national autonomy.
+* **Reflections on AI & Sovereignty:** Analyzing how Large Language Models shape public opinion and impact democratic stability. My focus is on the dominance of a few tech giants and how states use these tools to project influence and challenge national autonomy.
 
 ---
 
 ### The "Low-Tech" Constraint
 
 I run my experiments on a **2017 MacBook Air (8GB RAM, Dual-Core i5)** without paid cloud services. 
-This constraint encourages me to focus on small LLMs and lightweight techniques like LoRA. For me, it’s about deep understanding and efficiency rather than massive scale.
+This constraint encourages me to focus on small LLMs and lightweight techniques like LoRA. I prioritize deep understanding and efficiency over chasing massive scale.
+
+> **Update:** To fine-tune a 7B-parameter LLM with LoRA, I used a free GPU from Google Colab to avoid melting my laptop.
 
 ---
 
