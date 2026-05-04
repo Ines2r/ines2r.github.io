@@ -1,6 +1,6 @@
 ---
 title: "Mapping the French National Assembly: A Network Analysis of voting behavior (2012–2024)"
-description: "This analysis uses graph-based methods to map the relationships and voting proximities between Members of Parliament across three consecutive legislatures."
+description: "This analysis uses graph-based methods to map voting proximities between Members of Parliament across three consecutive legislatures."
 slug: networks-analysis
 date: 2026-02-14 00:00:00+0000
 image: Cover.png
