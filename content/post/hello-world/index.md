@@ -65,10 +65,6 @@ toc: true
 
 ---
 
-This blog is a technical notebook to explore topics I’m curious about. Everything here—code, data, and analysis—is hosted on GitHub to ensure others can inspect, reproduce, or build upon my work.
-
----
-
 ## Current interests & ideas
 
 * **AI & Machine Learning:** LLM fine-tuning, data poisoning, and predictive modeling.
@@ -81,16 +77,16 @@ This blog is a technical notebook to explore topics I’m curious about. Everyth
 
 ## The hardware constraint
 
-I run my experiments on a **2017 MacBook Air (8GB RAM, Dual-Core i5)** without paid cloud services. 
+I run my experiments on a **2017 MacBook Air (1.5 GB VRAM, Dual-Core i5)** without paid cloud services. 
 This constraint encourages me to focus on small LLMs and lightweight techniques like LoRA. I prioritize deep understanding and efficiency over chasing massive scale.
 
-> **Update:** To fine-tune a 7B-parameter LLM with QLoRA, I used a free T4 (16 GB) on Google Colab - my machine's 1.5 GB of VRAM makes it a non-starter for anything above a few hundred million parameters.
+> **Update:** To fine-tune a 7B-parameter LLM with QLoRA, I used a T4 GPU (16 GB) on Google Colab
 
 ---
 
 ## Closing Note
 
-This is a space for curiosity and open-source collaboration. Everything shared here is open for you to reuse, adapt, or critique. If a project sparks your interest, feel free to dive in and share your findings.
+This is a space for curiosity and open-source collaboration. Everything shared here is open for you to reuse, adapt, or critique. If a project sparks your interest, feel free to dive in.
 
 
 
