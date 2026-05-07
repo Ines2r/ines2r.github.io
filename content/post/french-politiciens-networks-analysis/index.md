@@ -371,8 +371,8 @@ THEMATIQUES = {
         "douanes", "entreprises", "croissance"
     ],
     "Souveraineté & International": [
-        "justice", "sécurité", "police", "prison", "immigration", 
-        "étranger", "asile", "frontière", "armée", "défense", "europe"
+        "justice", "sécurité", "police", "prison", "immigration",
+        "asile", "frontière", "armée", "défense", "europe"
     ]
 }
 ```
