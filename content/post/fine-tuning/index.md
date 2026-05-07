@@ -27,7 +27,7 @@ keywords:
     - quantization
 weight: 2
 toc: true
-draft: true
+draft: false
 ---
 
 <style>
