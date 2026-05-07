@@ -7,3 +7,60 @@
 {{- $jsonld := dict "@context" "https://schema.org" "@type" "Person" "name" .Site.Title "alternateName" "Ines2r" "url" .Site.BaseURL "description" .Site.Params.description "sameAs" (slice "https://github.com/Ines2r" "https://www.linkedin.com/in/inesderosnay/" "https://huggingface.co/Ines2R") -}}
 {{ printf "<script type=\"application/ld+json\">%s</script>" ($jsonld | jsonify) | safeHTML }}
 {{- end -}}
+
+{{- if .IsPage -}}
+<script>
+(function () {
+    function init() {
+        var toc = document.getElementById('TableOfContents');
+        var current = document.querySelector('.sidebar-toc-current');
+        var fill = document.querySelector('.sidebar-toc-progress-fill');
+        var thumb = document.querySelector('.sidebar-toc-progress-thumb');
+
+        // Mirror the theme scrollspy's active heading into the visible title.
+        if (toc && current) {
+            var updateCurrent = function () {
+                var active = toc.querySelector('li.active-class > a');
+                current.textContent = active ? active.textContent.trim() : '';
+            };
+            new MutationObserver(updateCurrent).observe(toc, {
+                attributes: true,
+                attributeFilter: ['class'],
+                subtree: true
+            });
+            updateCurrent();
+        }
+
+        // Reading progress: fill + thumb track scroll position through .article-content.
+        if (fill && thumb) {
+            var article = document.querySelector('.article-content');
+            if (!article) return;
+            var ticking = false;
+            var updateProgress = function () {
+                var rect = article.getBoundingClientRect();
+                var scrollable = rect.height - window.innerHeight;
+                var ratio = scrollable <= 0 ? 1 : Math.max(0, Math.min(1, -rect.top / scrollable));
+                var pct = (ratio * 100) + '%';
+                fill.style.height = pct;
+                thumb.style.top = pct;
+                ticking = false;
+            };
+            var onScroll = function () {
+                if (!ticking) {
+                    requestAnimationFrame(updateProgress);
+                    ticking = true;
+                }
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll, { passive: true });
+            updateProgress();
+        }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
+{{- end -}}

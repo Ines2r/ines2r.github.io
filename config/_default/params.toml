@@ -30,8 +30,9 @@ type = "categories"
 [[widgets.homepage]]
 type = "tag-cloud"
 
-[[widgets.page]]
-type = "toc"
+# TOC is rendered in the left sidebar instead of the right one (see layouts/partials/sidebar/left.html)
+# [[widgets.page]]
+# type = "toc"
 
 [comments]
 enabled = false

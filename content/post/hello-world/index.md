@@ -1,16 +1,12 @@
 ---
-title: Working Notes
-description: Exploring AI, Machine Learning, and Graphs under real-world constraints
+title: Welcome
+description: Exploring AI, ML & science
 slug: welcome
-date: 2026-01-20 00:00:00+0000
+date: 2026-01-20
 image: cover.jpg
 categories:
     - Reflections
 tags:
-    - AI
-    - Machine Learning
-    - Graph Theory
-    - LLM
 keywords:
     - AI
     - Machine Learning
@@ -20,7 +16,7 @@ keywords:
     - Quantum computing
     - LoRA
 weight: 10
-toc: false
+toc: true
 ---
 
 <style>
@@ -69,15 +65,11 @@ toc: false
 
 ---
 
-# Working Notes
-
-**Exploring AI, Machine Learning, and Graphs — with Limited Resources**
-
 This blog is a technical notebook to explore topics I’m curious about. Everything here—code, data, and analysis—is hosted on GitHub to ensure others can inspect, reproduce, or build upon my work.
 
 ---
 
-### Current Interests & Research Ideas
+## Current interests & ideas
 
 * **AI & Machine Learning:** LLM fine-tuning, data poisoning, and predictive modeling.
 * **Graph Theory & Network Science:** Analyzing political networks (parliamentary voting behavior) and modeling epidemic spreads.
@@ -87,12 +79,12 @@ This blog is a technical notebook to explore topics I’m curious about. Everyth
 
 ---
 
-### The "Low-Tech" Constraint
+## The hardware constraint
 
 I run my experiments on a **2017 MacBook Air (8GB RAM, Dual-Core i5)** without paid cloud services. 
 This constraint encourages me to focus on small LLMs and lightweight techniques like LoRA. I prioritize deep understanding and efficiency over chasing massive scale.
 
-> **Update:** To fine-tune a 7B-parameter LLM with LoRA, I used a free GPU from Google Colab to avoid melting my laptop.
+> **Update:** To fine-tune a 7B-parameter LLM with QLoRA, I used a free T4 (16 GB) on Google Colab - my machine's 1.5 GB of VRAM makes it a non-starter for anything above a few hundred million parameters.
 
 ---
 

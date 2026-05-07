@@ -12,8 +12,6 @@ tags:
     - Graph Theory
     - Network Analysis
     - Cosine Similarity
-    - Political Science
-    - Data Visualization
 keywords:
     - French National Assembly
     - voting behavior
@@ -24,7 +22,7 @@ keywords:
     - political science
     - cosine similarity
 weight: 2
-toc: false
+toc: true
 ---
 
 <style>
@@ -72,15 +70,13 @@ toc: false
 </style>
 ---
 
-# Networks Analysis
-
 This project uses Graph Theory to analyze voting patterns in the French National Assembly. By treating MPs as nodes and shared votes as edges, we reveal the structure of political life, moving beyond simple party labels.
 
 ---
 
-## 1. Introduction and Political Context
+## 1. Introduction and political context
 
-### 1.1 Institutional Framework: The French National Assembly
+### 1.1 Institutional framework
 
 The French National Assembly is the lower chamber of the French bicameral parliament. It is composed of **577 Members of Parliament** elected by a two-round single-member plurality voting system in geographically defined constituencies. Members of Parliament form **political groups** organized according to their electoral and ideological affinities.
 
@@ -96,7 +92,7 @@ Each Member of Parliament (MP) in the National Assembly is affiliated with a spe
 
 > We have more than 577 MPs because of resignations and replacements during the legislature.
 
-### 1.2 Motivations and Research Questions
+### 1.2 Motivations and research questions
 
 The objective of this project is to map the various political currents and their relative positioning by leveraging parliamentary voting data. Several questions naturally arise:
 
@@ -109,7 +105,7 @@ Our approach:
 - Uses **cosine distance** as a similarity metric
 - Applies **spatialization** techniques (force-directed layout) and **principal component analysis** to visualize these data.
 
-### 1.3 Overview of Main Political Forces and Ideological Positioning
+### 1.3 Overview of main political forces
 
 To facilitate the interpretation of the spatialization graphs, the table below summarizes the main political groups, their associated colors in our study, and their core principles according to their official platforms.
 
@@ -134,11 +130,11 @@ To facilitate the interpretation of the spatialization graphs, the table below s
 ---
 
 
-## 2. Theoretical Framework and Methodology
+## 2. Framework and methodology
 
-### 2.1 Mathematical Foundations: Vector Representation of Votes
+### 2.1 Vector representation of votes
 
-#### 2.1.1 The Space of Parliamentary Votes
+#### 2.1.1 The space of parliamentary votes
 
 Each Member of Parliament can be represented by a **vote vector** $\mathbf{v}_i \in \mathbb{R}^n$, where $n$ is the number of ballot votes analyzed. Formally:
 
@@ -154,7 +150,7 @@ Each component $v_{i,j}$ encodes the MP's position on a specific vote $j$:
 - $\text{NaN}$ : Absence (Not present during the session)
 
 
-#### 2.1.2 Vote Matrix and Data Structure
+#### 2.1.2 Vote matrix and data structure
 
 After collecting votes via the NosDéputés.fr API, we construct a **vote matrix** $M \in \mathbb{R}^{m \times n}$:
 
@@ -173,7 +169,7 @@ v_{m,1} & v_{m,2} & \cdots & v_{m,n}
 $$
 
 
-### 2.2 Handling Missing Data: The Parliamentary NaN Problem
+### 2.2 Handling missing data
 
 **Major challenge:** The matrix $M$ contains missing values (NaN), corresponding to parliamentary absences. They reflect a latent variable: parliamentary engagement.
 
@@ -182,9 +178,9 @@ Two analytical frameworks are considered:
 - **“Presence-Only” (Pearson, Agreement Ratio):** Focuses strictly on ideological alignment during shared presence. It is "agnostic" to the total volume of activity, but highly volatile when participation is low.
 - **“Volume-Aware” (Cosine, Jaccard):** Integrates the level of activity into the geometry. By treating absence as a null component ($0$), it stabilizes the positions of inactive MPs by preventing them from reaching extreme similarity scores based on a single shared vote.
 
-### 2.3 Four Similarity Metrics
+### 2.3 Four similarity metrics
 
-#### 2.3.1 Cosine Similarity (Chosen Approach)
+#### 2.3.1 Cosine similarity (chosen approach)
 
 Cosine similarity measures the **directional alignment** between two vectors:
 
@@ -202,7 +198,7 @@ $$
 - Range: $S_{\cos} \in [-1, +1]$.
 - Scale-invariant: Independent of the number of votes, provided the participation is sufficient to establish a stable direction.
 
-#### 2.3.2 Pearson Correlation
+#### 2.3.2 Pearson correlation
 
 $$
 \rho(\mathbf{A}, \mathbf{B}) = \frac{\mathbb{E}[(\mathbf{A} - \bar{A})(\mathbf{B} - \bar{B})]}{\sigma_A \sigma_B}
@@ -212,7 +208,7 @@ $$
 
 **Limitation:** Pearson suffers from **high sample bias** in sparse datasets. If two MPs coincide on only a few votes and agree, Pearson yields a perfect correlation ($+1.0$), creating "false positive" ideological alliances and over-inflating the importance of rare voters.
 
-#### 2.3.3 Jaccard Similarity
+#### 2.3.3 Jaccard similarity
 
 $$
 S_{\text{Jaccard}} = \frac{|\text{Agreements}|}{|P_A \cup P_B|}
@@ -222,7 +218,7 @@ where $P_A$ and $P_B$ are the sets of votes where MPs A and B were present.
 
 **Problem:** This metric is overly sensitive to participation gaps. The **union** in the denominator aggressively penalizes differences in activity levels, "diluting" the similarity toward zero even if the MPs agree on 100% of their shared presence.
 
-#### 2.3.4 Weighted Agreement (Agreement Ratio)
+#### 2.3.4 Weighted agreement
 
 $$
 S_{\text{agreement}} = \frac{|\text{Agreements}|}{|P_A \cap P_B|}
@@ -230,15 +226,15 @@ $$
 
 **Problem:** This often leads to **geometric degeneracy**. Since members of the same party follow strict voting instructions, their intersection of votes often results in $S = 1.0$. In a PCA or network graph, this causes entire political groups to **collapse into a single point**.
 
-### 2.4 Synthesis: Choice of Metric
+### 2.4 Synthesis: choice of metric
 
 For this study, **we favor cosine similarity**. Unlike Pearson, it avoids over-inflating similarities based on tiny samples. Unlike the Agreement Ratio, it preserves the granularity of the Assembly by allowing subtle differences in participation and individual deviations to translate into distinct geometric coordinates.
 
 ---
 
-## 3. Voting Network
+## 3. Voting network
 
-### 3.1 Graph Construction via k-NN
+### 3.1 Graph construction via k-NN
 
 Rather than creating a complete graph (potentially 150k+ edges), we use a **k-nearest neighbors topology**:
 
@@ -247,7 +243,7 @@ For each Member of Parliament $i$:
 2. Retain the $k = 5$ neighbors with the highest similarity
 3. Add a weighted edge $(i, j)$ with weight = $S_{\cos}(i, j)$
 
-### 3.2 Layout Algorithm: Spring Model
+### 3.2 Layout algorithm: spring model
 
 To spatialize the graph in 2D, we apply the **Fruchterman–Reingold** algorithm (force-directed layout). All MPs are thrown randomly onto the plot, and the algorithm iteratively adjusts their positions until the system reaches equilibrium, driven by two competing forces:
 
@@ -288,12 +284,12 @@ For Non-Linked MPs (Everyone else): the distance $d_{ij}$ does not directly refl
 - Transversal behavior: Several MPs act as bridges between clusters. For instance, the Horizons group appears stretched: some members overlap with Renaissance, while others remain closer to the Republicans, reflecting a split in voting proximity.
 
 
-## 4. Principal Component Analysis (PCA): Reduction and Visualization
+## 4. Principal component analysis (PCA):
 
 We saw in section 2.1 that each MP is represented by a vote vector in a high-dimensional space ($\mathbb{R}^n$ where $n$ is the number of ballot votes). To visualize this $n$-dimensional voting space, we apply Principal Component Analysis (PCA). This dimensionality reduction technique projects the voting vectors onto a 2D plane (PC1 and PC2), preserving the maximum variance. This allow us to geographically map political distances: two deputies appearing close on the plot share a high proximity in their voting records.
 
 
-### 4.1 Theoretical Foundations of PCA
+### 4.1 Foundations of PCA
 
 
 Formally, let $\mathbf{M} \in \mathbb{R}^{m \times n}$ be the voting matrix (with $m$ MPs and $n$ votes). We first transform it into a standardized matrix $\mathbf{X}\_{\text{std}}$ where each element $x\_{i,j}$ is defined as:
@@ -308,17 +304,17 @@ Where:
 **Standardization Justification:** By centering each column and scaling to unit variance, we ensure that every vote has equal statistical weight. This prevents "landslide" votes (where almost everyone agrees) from drowning out more subtle, but politically significant, contested votes where the assembly is deeply divided.
 
 
-#### 1. Finding the Principal Axes
+#### 1. Finding the principal axes
 PCA identifies the two principal axes $\mathbf{u}_1, \mathbf{u}_2$ that maximize the **explained variance**. In other words, it looks for the directions along which the MPs are the most spread out:
 
 $$
 \mathbf{u}_k = \arg\max_{\|\mathbf{u}\|=1} \text{Var}(\mathbf{X}_{\text{std}} \mathbf{u})
 $$
 
-* **PC1 (The Primary Cleavage):** The axis that captures the largest share of variance. In the French National Assembly, this should represent the **Government vs. Opposition** divide.
-* **PC2 (The Secondary Nuance):** The axis perpendicular (orthogonal) to PC1 capturing the next largest source of variation (e.g., internal dissent or transverse issues).
+* **PC1 (The primary cleavage):** The axis that captures the largest share of variance. In the French National Assembly, this should represent the **Government vs. Opposition** divide.
+* **PC2 (The secondary nuance):** The axis perpendicular (orthogonal) to PC1 capturing the next largest source of variation (e.g., internal dissent or transverse issues).
 
-#### 2. Geometric Projection
+#### 2. Geometric projection
 Each MP's standardized vector $\mathbf{x_i} \in \mathbb{R}^n$ is projected onto this plane to obtain their 2D coordinates $(z_{i,1}, z_{i,2})$:
 
 $$
@@ -342,7 +338,7 @@ $$
 A reliable PCA could not be generated for the 14th Legislature due to extreme absenteeism and a low volume of ballot. While filtering out deputies with less than 20% participation was necessary to avoid the 'Arch Effect' and data distortion, it resulted in too few data points to provide more than basic legislative insights.
 
 
-### 4.3 Thematic Analysis
+### 4.3 Thematic analysis
 
 We apply a **thematic classification** based on the title of each ballot vote. Themes include:
 - Ecology & Territories (agriculture, climate, energy, transport)
@@ -381,7 +377,7 @@ THEMATIQUES = {
 }
 ```
 
-#### Dataset Overview: Distribution of Ballots by Theme
+#### Distribution of Ballots by Theme
 
 The following table summarizes the volume of ballot votes analyzed for each legislature, categorized by their primary thematic focus. These themes serve as the basis for our comparative spatial analysis.
 
@@ -426,11 +422,11 @@ Not all themes yield insightful visualizations; those with higher explained vari
 
 While PCA highlights political blocs, a fragmented assembly often requires transversal compromises to reach a majority. To identify the specific actors who facilitate these compromises, we use **Betweenness Centrality**. This metric moves beyond simple group membership to pinpoint deputies who act as mandatory "bridges" between different ideological clusters.
 
-### 5 Identification of Strategic Pivots (Betweenness Centrality)
+### 5 Identification of strategic pivots
 
 Unlike simple popularity (Degree), this metric identifies deputies who act as mandatory "bridges" between different ideological clusters.
 
-#### 5.1. Mathematical Definition
+#### 5.1. Definition
 The centrality $g(v)$ of an MP $v$ is calculated by counting how many shortest paths between all other pairs of MPs pass through $v$:
 
 $$g(v) = \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}$$
@@ -439,14 +435,14 @@ Where:
 * $\sigma_{st}$ is the total number of shortest paths from MP $s$ to MP $t$.
 * $\sigma_{st}(v)$ is the number of those paths that pass through $v$.
 
-#### 5.2. Distance Inversion and Pathfinding
+#### 5.2. Distance inversion and pathfinding
 Since our graph edges represent **similarity** (Cosine Similarity), we must transform them into **distances** to find the "shortest" ideological path. We define the distance $d_{ij}$ as:
 
 $$d_{ij} = \frac{1}{\text{weight}_{ij} + \epsilon}$$
 
 This inversion ensures that a high voting similarity results in a short distance. The algorithm then identifies "pivots": deputies who, by their transversal voting patterns, minimize the distance between antagonistic groups (e.g., bridging the gap between the Majority and the Opposition).
 
-#### 5.3. Political Significance
+#### 5.3. Political significance
 
 In a parliament without an absolute majority, these MPs represent the **connective tissue** of the institution. A high Betweenness score reveals a **brokerage capacity**: these individuals are structurally positioned to negotiate amendments that can "swing" a vote, as they constitute the most probable pathway for a ballot to transition from one political bloc to another.
 
@@ -468,7 +464,7 @@ Conversely, deputies from smaller or more heterogeneous groups (LIOT, NI, UDI) e
 
 ## 6. Conclusion:
 
-### 6.1 Geometric Reinterpretation of French Political Cleavages
+### 6.1 Geometric reinterpretation of French political cleavages
 
 Our quantitative findings provide a mathematical framework to classical qualitative political science, while highlighting new structural shifts:
 
@@ -481,11 +477,11 @@ Our quantitative findings provide a mathematical framework to classical qualitat
    - **Insight:** The "logic of the bloc" (supporting or opposing the government) remains the most powerful statistical predictor of voting behavior, often overriding personal or thematic nuances.
 
 
-### 6.2 The Strategic Function of Pivots
+### 6.2 The strategic function of pivots
 
 Pivots (identified by high **Betweenness Centrality**) act as the "connective tissue" of the Assembly. They reduce the distance between antagonistic groups. Without enough bridges, the Assembly would more likely reach a state of legislative paralysis.
 
-### 6.3 Limitations: The "Hidden" Dimensions
+### 6.3 Limitations: The hidden dimensions
 
 While the 2D PCA captures the most visible signals (often ~15-20% of total variance), it intentionally discards the "noise" which often contains crucial secondary information. The remaining variance (axes 3 to $n$) typically hides:
 
@@ -554,7 +550,7 @@ For each political group $P$, we compute two distinct metrics:
 
 The leaders identified in our tables (Figures 3 & 4) are often not household names. While Mathilde Panot is a notable exception, most "hubs" are relatively obscure backbenchers. This discrepancy reveals a potential limitation of our mathematical model.
 
-**The "Participation Bias"**
+**The participation bias**
 
 Our model relies on Cosine Similarity, which heavily weights participation frequency:
 
@@ -569,7 +565,7 @@ Artificial Hubs: Is an MP a "Hub" because they lead others, or simply because th
 
 In short, our graph may be mapping legislative discipline rather than political influence. While Mathilde Panot proves that one person can be both a media leader and a legislative hub, for most parties, the "real" power likely lies outside the mathematical center of our clusters.
 
-### Appendix B: Architecture and Implementation of Data Retrieval
+### Appendix B: Architecture and implementation of data retrieval
 
 ### 1 Data Source and API
 
@@ -584,7 +580,7 @@ https://www.nosdeputes.fr/{LEGISLATURE}/scrutin/{SCRUTIN_ID}/xml
 where `LEGISLATURE` $\in \{15, 16\}$ and `SCRUTIN_ID` is the numerical identifier of the vote.
 Unfortunately, the API hasn't the same amount of data for previous legislatures. For the 14th legislature, we found an archive on [Asssemblée Nationale](https://data.assemblee-nationale.fr/).
 
-### 2 Parallel Download Protocol
+### 2 Parallel download protocol
 
 To accelerate data collection (approx 4,000 ballot votes), we use a **ThreadPoolExecutor** with up to 10 concurrent workers.
 
@@ -595,7 +591,7 @@ To accelerate data collection (approx 4,000 ballot votes), we use a **ThreadPool
 
 Each record: `{depute, group, position, scrutin_id}`
 
-### 3 Transformation into a Pivot Matrix
+### 3 Transformation into a pivot matrix
 
 The raw list of votes is transformed into a **sparse matrix**:
 
