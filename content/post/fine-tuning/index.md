@@ -110,7 +110,7 @@ For *full fine-tuning*, training must hold far more than the model weights. Each
 
 $$7.24 \times 10^9 \times 12 = 87 \text{ GB}$$
 
-(In practice, mixed-precision training also keeps a fp32 master copy of the weights for numerical stability, adding 4 bytes/parameter — $7.24 \times 10^9 \times 16 \approx 116$ GB total.)
+(In practice, mixed-precision training also keeps a fp32 master copy of the weights for numerical stability, adding 4 bytes/parameter, for $7.24 \times 10^9 \times 16 \approx 116$ GB total.)
 
 87 GB exceeds both the MacBook (1.5 GB) and the T4 (16 GB) by a wide margin. We must shrink both the trainable parameter count and the base model's memory footprint. LoRA does the first; NF4 quantization does the second.
 
