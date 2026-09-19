@@ -69,7 +69,7 @@ toc: true
 
 * **AI & Machine Learning:** LLM fine-tuning, data poisoning, and predictive modeling.
 * **Graph Theory & Network Science:** Analyzing political networks (parliamentary voting behavior) and modeling epidemic spreads.
-* **Quantum Computing & Cryptography:** Exploring the fundamentals of quantum information—such as running single-qubit circuits via the Felis framework and Alice & Bob’s cat qubit technology.
+* **Quantum Computing & Cryptography:** Exploring the fundamentals of quantum information, such as running single-qubit circuits via the Felis framework and Alice & Bob’s cat qubit technology.
 * **Decision Systems & Strategy:** Game theory applied to sports (tennis) or board games, and reinforcement learning.
 * **Reflections on AI & Sovereignty:** Analyzing how Large Language Models shape public opinion and impact democratic stability. My focus is on the dominance of a few tech giants and how states use these tools to project influence and challenge national autonomy.
 
