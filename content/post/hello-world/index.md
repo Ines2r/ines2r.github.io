@@ -71,13 +71,12 @@ toc: true
 * **Graph Theory & Network Science:** Analyzing political networks (parliamentary voting behavior) and modeling epidemic spreads.
 * **Quantum Computing & Cryptography:** Exploring the fundamentals of quantum information, such as running single-qubit circuits via the Felis framework and Alice & Bob’s cat qubit technology.
 * **Decision Systems & Strategy:** Game theory applied to sports (tennis) or board games, and reinforcement learning.
-* **Reflections on AI & Sovereignty:** Analyzing how Large Language Models shape public opinion and impact democratic stability. My focus is on the dominance of a few tech giants and how states use these tools to project influence and challenge national autonomy.
 
 ---
 
 ## The hardware constraint
 
-I run my experiments on a **2017 MacBook Air (1.5 GB VRAM, Dual-Core i5)** without paid cloud services. 
+I run my experiments on a 2017 MacBook Air (1.5 GB VRAM, Dual-Core i5) without cloud services. 
 This constraint encourages me to focus on small LLMs and lightweight techniques like LoRA. I prioritize deep understanding and efficiency over chasing massive scale.
 
 > **Update:** To fine-tune a 7B-parameter LLM with QLoRA, I used a T4 GPU (16 GB) on Google Colab
