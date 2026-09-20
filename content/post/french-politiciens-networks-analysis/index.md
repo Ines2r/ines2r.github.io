@@ -72,7 +72,6 @@ toc: true
 
 This project uses Graph Theory to analyze voting patterns in the French National Assembly. By treating MPs as nodes and voting similarity as edges, we map how MPs vote relative to each other, within and across political groups.
 
-*Updated in September 2026: participation is now measured over all the periods an MP sat, several statements are backed by figures, and interpretations the data does not support were removed.*
 
 ---
 
@@ -80,17 +79,15 @@ This project uses Graph Theory to analyze voting patterns in the French National
 
 ### 1.1 Institutional framework
 
-The French National Assembly is the lower chamber of the French bicameral parliament. It is composed of **577 Members of Parliament** elected by a two-round single-member plurality voting system in geographically defined constituencies. Members of Parliament form **political groups** organized according to their electoral and ideological affinities.
+The French National Assembly is the lower chamber of the French bicameral parliament. It is composed of 577 Members of Parliament elected for five years by a two-round single-member majority system, in 577 constituencies (566 in France, 11 for French citizens living abroad). Each Member of Parliament (MP) in the National Assembly is affiliated with a specific political group.
 
-For illustrative purposes, Figure 1 presents the composition of three consecutives legislatures by political group:
+For illustrative purposes, Figure 1 presents the composition of three consecutive legislatures by political group:
 
 | 14th Legislature | 15th Legislature | 16th Legislature |
 | :---: | :---: | :---: |
-| <a href="L14_distribution.png" target="_blank"><img src="L14_distribution.png" style="height: 220px; cursor: zoom-in;"></a> | <a href="L15_distribution.png" target="_blank"><img src="L15_distribution.png" style="height: 220px; cursor: zoom-in;"></a> | <a href="L16_distribution.png" target="_blank"><img src="L16_distribution.png" style="height: 220px; cursor: zoom-in;"></a> |
+| <a href="L14_distribution.png" target="_blank"><img src="L14_distribution.png" style="height: 220px; cursor: zoom-in;" alt="L14 distribution"></a> | <a href="L15_distribution.png" target="_blank"><img src="L15_distribution.png" style="height: 220px; cursor: zoom-in;" alt="L15 distribution"></a> | <a href="L16_distribution.png" target="_blank"><img src="L16_distribution.png" style="height: 220px; cursor: zoom-in;" alt="L16 distribution"></a> |
 
 **Figure 1:** Distribution of the 577 Members of Parliament by political group.
-
-Each Member of Parliament (MP) in the National Assembly is affiliated with a specific political group. While these groups often correspond to a single political party, this is not always the case. A notable example is the Rassemblement National (RN) during the 15th legislature (2017–2022): although several MPs were members of this party, they did not form an official parliamentary group.
 
 > We have more than 577 MPs because of resignations and replacements during the legislature.
 
@@ -170,9 +167,9 @@ v_{m,1} & v_{m,2} & \cdots & v_{m,n}
 \end{pmatrix}
 $$
 
-> **Note: what "ballot" means here, and what it does not.** The Assembly votes in three ways. Most decisions are taken **by show of hands** (*main levée*): the president of the sitting announces the result, and no individual position is recorded anywhere. A **public ballot** (*scrutin public*, ordinary or solemn) records each MP's position — for, against, abstention — and is held only when it is mandatory (motion of censure, organic laws) or requested by the government, a group chair, or the Conference of Presidents. A **secret ballot** is used for appointments. Only public ballots produce nominative data, and they are what the NosDéputés.fr API returns: our $n$ columns are public ballots, not all the votes held in the chamber.
+> **Note on data:** Most decisions in the Assembly are taken by show of hands, and no individual position is recorded. Only a public ballot (*scrutin public*) records each MP's vote - for, against, abstention - and it is held only when mandatory (motions of censure, final reading of organic laws) or requested by the president of the sitting, the government, the committee responsible, or a group chair. These are the ballots the NosDéputés.fr API returns: our $n$ columns are public ballots, not all the votes held in the chamber.
 >
-> So $\text{NaN}$ means "no vote recorded in a public ballot", which is not the same as absence from the chamber. Two consequences are worth keeping in mind throughout. Proxy votes (*délégation de vote*) are recorded like any other, so a recorded vote is not proof of presence either. And the lowest participation figures often have institutional causes: the **President of the Assembly** presides over the sitting and by convention takes part in votes only exceptionally (Yaël Braun-Pivet, 0.15% of the ballots of the 16th Legislature), and an MP **appointed to the government** is replaced by their substitute one month later (Article 23 of the Constitution), so only the periods when they sat are counted — Carole Grandjean and Clément Beaune, ministers from July 2022 to January 2024, are the next two lowest. These MPs are at the bottom of the ranking for reasons that have nothing to do with how assiduous they are.
+> So $\text{NaN}$ means "no vote recorded in a public ballot", not "absent" - in either direction: a present MP need not take part, and an absent one can be covered by a proxy. The lowest participation figures are usually institutional rather than a sign of absenteeism: the President of the Assembly by convention rarely votes (Yaël Braun-Pivet, 0.15% of the ballots of the 16th Legislature), and an MP appointed to the government cannot vote for a month, then loses the seat to their substitute - Carole Grandjean and Clément Beaune, ministers from July 2022 to January 2024, are the next two lowest.
 
 ### 2.2 Handling missing data
 
@@ -250,9 +247,7 @@ For each Member of Parliament $i$:
 
 ### 3.2 Layout algorithm: spring model
 
-To spatialize the graph in 2D, we apply the **Fruchterman–Reingold** algorithm (force-directed layout). All MPs are thrown randomly onto the plot, and the algorithm iteratively adjusts their positions, driven by two competing forces. At each iteration every MP moves in the direction of the resulting force, by a distance (the "temperature") that decreases linearly, so the layout gradually freezes. The figures below use at most 400 iterations (the computation stops at iteration 392 or 393, when the moves become negligible) and a fixed random seed, and the final map is rotated to match the orientation of the PCA (section 4).
-
-The first version of this article used `networkx.spring_layout` with 50 iterations. For graphs of 500 nodes or more, networkx 3.6 does not run these iterations: it minimizes an energy built from the same forces, plus a "gravity" term that pulls each connected component towards the centre, with at most 50 steps of an optimizer (L-BFGS). With that setting, two runs from different random starts gave noticeably different maps for the 14th and 16th Legislatures, and similar ones for the 15th. The figures were regenerated with the iterative algorithm described above, which networkx uses for smaller graphs.
+To spatialize the graph in 2D, we apply the **Fruchterman–Reingold** algorithm (force-directed layout). All MPs are thrown randomly onto the plot, and the algorithm iteratively adjusts their positions, driven by two competing forces. At each iteration every MP moves in the direction of the resulting force, by a distance that decreases linearly, so the layout gradually freezes. The figures below use at most 400 iterations (the computation stops at iteration 392 or 393, when the moves become negligible) and a fixed random seed.
 
 $$
 F_{\text{rep}}(i, j) = \frac{k^2}{d_{ij}}
@@ -261,7 +256,7 @@ $$
 F_{\text{attr}}(i, j) = \text{weight}_{ij} \cdot \left(-\frac{d_{ij}^2}{k}\right)
 $$
 
-These are the forces of Fruchterman and Reingold (1991); as in networkx, the attraction is multiplied by the weight of the edge, and applies only to linked MPs.
+These are the forces of Fruchterman and Reingold (1991). As in networkx, the attraction is multiplied by the weight of the edge, and applies only to linked MPs.
 
 where:
 - $\text{weight}_{ij}$ = The Cosine Similarity between MP $i$ and MP $j$. The more they vote alike, the stronger the pull.
@@ -286,13 +281,7 @@ For Non-Linked MPs (Everyone else): the distance $d_{ij}$ does not directly refl
 **Figure 2:** Graph of the 14th, 15th, and 16th legislatures using cosine similarity. Nodes are colored by political group. In the 14th Legislature, 13 of the 15 GDR MPs are linked only to each other: they form a component disconnected from the rest of the graph (top of the figure), whose position relative to the other MPs is arbitrary.
 
 
-#### Observations:
-
-- Group sizes change a lot between legislatures. Counting the MPs with recorded votes (replacements included), the Socialist group goes from 333 MPs (SRC, then SER) in the 14th Legislature to 37 (SOC, NG) in the 15th and 31 (SOC-A, SOC) in the 16th; LR (UMP, then Les Républicains) from 208 to 119 and 62.
-- In the 16th Legislature, the five nearest neighbours of the 34 Horizons MPs are mostly Horizons (73 links), Renaissance (69) and MoDem (25) MPs; one link goes to an LR MP.
-
-
-## 4. Principal component analysis (PCA):
+## 4. Principal component analysis (PCA)
 
 We saw in section 2.1 that each MP is represented by a vote vector in a high-dimensional space ($\mathbb{R}^n$ where $n$ is the number of ballot votes). To visualize this $n$-dimensional voting space, we apply Principal Component Analysis (PCA). This dimensionality reduction technique projects the voting vectors onto a 2D plane (PC1 and PC2), preserving the maximum variance. Two deputies appearing close on the plot tend to have similar voting records, within the limits of a 2D projection (see 4.2).
 
@@ -309,8 +298,6 @@ Where:
 * **$\mu_j$**: The **mean vote** for ballot $j$: $\mu_j = \frac{1}{m} \sum_{i=1}^{m} m_{i,j}$.
 * **$\sigma_j$**: The **standard deviation** of ballot $j$: $\sigma_j = \sqrt{\frac{1}{m} \sum_{i=1}^{m} (m_{i,j} - \mu_j)^2}$.
 
-**Standardization:** By centering each column and scaling it to unit variance, every ballot gets the same weight in the PCA. Without it, the ballots with the largest spread of values (high turnout, split votes) would weigh more than the others.
-
 
 #### 1. Finding the principal axes
 PCA identifies the two principal axes $\mathbf{u}_1, \mathbf{u}_2$ that maximize the **explained variance**. In other words, it looks for the directions along which the MPs are the most spread out:
@@ -319,8 +306,6 @@ $$
 \mathbf{u}_k = \arg\max_{\|\mathbf{u}\|=1} \text{Var}(\mathbf{X}_{\text{std}} \mathbf{u})
 $$
 
-* **PC1:** The axis that captures the largest share of variance (12.2% in the 15th Legislature, 17.4% in the 16th). In both legislatures, the groups of the presidential majority (LREM and DEM in the 15th; REN, DEM and HOR in the 16th) are at one end, and LFI at the other end, with the other opposition groups on the same side as LFI (LR is close to the middle in the 16th).
-* **PC2:** The axis perpendicular (orthogonal) to PC1 capturing the next largest share (2.3% and 7.4%). In the 15th Legislature it separates LFI and GDR from LR; in the 16th, the RN from LFI and the ecologists.
 
 #### 2. Geometric projection
 Each MP's standardized vector $\mathbf{x_i} \in \mathbb{R}^n$ is projected onto this plane to obtain their 2D coordinates $(z_{i,1}, z_{i,2})$:
@@ -334,16 +319,14 @@ $$
 ### 4.2 Interpretation of the PCA plots
 
 1.  **Average behavior:** Because the data is centered via `StandardScaler`, the origin of the PCA plot represents the **mathematical average behavior** of the Assembly. 
-2.  **Participation:** The plot shows several "branches" (mostly one per political group) starting from a common area. That area is where an MP with no recorded vote would land (after standardization, a row of zeros is not at the origin). The fewer ballots an MP votes on, the closer they are to it: the Spearman correlation between participation and the distance to that point on (PC1, PC2) is 0.79 in the 15th Legislature and 0.93 in the 16th.
+2.  **Participation:** The plot shows several "branches" (mostly one per political group) starting from a common area. That area is where an MP with no recorded vote would land (after standardization, a row of zeros is not at the origin). The fewer ballots an MP votes on, the closer they are to it. This area lies close to the origin, but the two mean different things: the origin is average voting behavior, that point is the absence of data.
 3. **The 2D Projection Limit:** A cluster that appears compact in 2D may be more dispersed along the other principal components, so its visual dispersion is not a measure of the group's cohesion.
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
 | <a href="L15_pca_Global.png" target="_blank"><img src="L15_pca_Global.png" style="width: 100%; max-height: 500px; object-fit: contain; cursor: zoom-in;" alt="PCA L15"></a> | <a href="L16_pca_Global.png" target="_blank"><img src="L16_pca_Global.png" style="width: 100%; max-height: 500px; object-fit: contain; cursor: zoom-in;" alt="PCA L16"></a> |
 
-**Figure 5:** Principal Component Analysis for all ballot
-
-The PCA of the 14th Legislature is not shown: our data contains 1,023 ballots for it, against 4,394 and 4,029 for the 15th and 16th.
+**Figure 3:** Principal Component Analysis for all ballots.
 
 
 ### 4.3 Thematic analysis
@@ -360,7 +343,7 @@ This enables **theme-based analyses**.
 
 We implemented a **deterministic keyword-matching algorithm**. This process filters the legislative titles provided by the NosDéputés.fr XML API to categorize each vote into one of four themes.
 
-> **Methodological Note:** > While a Large Language Model (LLM) would undoubtedly be more "sophisticated" at interpreting the nuanced context of legislative titles, we decided to stick to a keyword-based approach. It is simple and easily understandable.
+> **Methodological Note:** While a Large Language Model (LLM) would undoubtedly be more "sophisticated" at interpreting the nuanced context of legislative titles, we decided to stick to a keyword-based approach. It is simple and easily understandable.
 
 The script scans each `titre` (title) tag within the XML response. The ballot is mapped to the first theme, in the order below, with a keyword appearing in the title:
 
@@ -408,27 +391,27 @@ Beyond the global PCA, we repeat the analysis for each thematic domain. For exam
 3. Visualize: Points colored by political group
 4. Compare the positions of the groups
 
-The share of variance explained by PC1 differs between themes. It should be compared with care: it also depends on the number of ballots and differs between legislatures for all ballots taken together (see below).
+The share of variance explained by PC1 differs between themes. It should be compared with care: it also depends on the number of ballots and differs between legislatures for all ballots taken together.
 
 | 15th Legislature (2017-2022) | 16th Legislature (2022-2024) |
 | :---: | :---: |
 | <a href="L15_pca_Solidarité_&_Social.png" target="_blank"><img src="L15_pca_Solidarité_&_Social.png" style="width: 100%; max-height: 500px; object-fit: contain; cursor: zoom-in;" alt="PCA L15 Social"></a> | <a href="L16_pca_Solidarité_&_Social.png" target="_blank"><img src="L16_pca_Solidarité_&_Social.png" style="width: 100%; max-height: 500px; object-fit: contain; cursor: zoom-in;" alt="PCA L16 Social"></a> |
 
-**Figure 6:** Principal Component Analysis for ballot votes related to Solidarity and Social.
+**Figure 4:** Principal Component Analysis for ballot votes related to Solidarity and Social.
 
 **Main observations:**
 
-- 15th Legislature (757 ballots): PC1 explains 19.9% of the variance. LFI, GDR and SOC are at one end, LREM at the other; LR lies in between.
+- **15th Legislature (757 ballots).** PC1 explains 19.9% of the variance. LFI, SOC and GDR are at one end, LREM at the other, and LR lies in between, close to the centre.
 
-- 16th Legislature (335 ballots): PC1 explains 41.8% of the variance. LFI, the ecologists and SOC-A are at one end, REN, DEM and HOR at the other. LR and the RN lie in between, LR closer to the majority groups and the RN closer to the left groups. PC2 separates the RN and LR from the ecologists and LFI.
+- **16th Legislature (335 ballots).** PC1 explains 41.8% of the variance, against 17.4% for all the ballots of the same legislature (Figure 3). On these votes a single axis captures more than twice the share it captures overall, and the groups fall into three clearly separated areas: REN, DEM, HOR and LR at one end; LFI-NUPES, SOC-A and the ecologists at the other, with GDR between them; and the RN on the same side of PC1 as the left groups, but held apart from them by PC2.
 
-- The share of PC1 is higher in the 16th Legislature, but so is the share of PC1 for all ballots (17.4%, against 12.2%). For random sets of ballots of the same size, PC1 explains about 12% in the 15th Legislature and about 18% in the 16th.
+
 
 ---
 
-In addition to PCA, we compute the **Betweenness Centrality** of each MP in the k-NN graph.
+## 5. Pivots: betweenness centrality
 
-### 5 Pivots: betweenness centrality
+In addition to PCA, we compute the **Betweenness Centrality** of each MP in the k-NN graph.
 
 Unlike degree, which counts an MP's links, this metric counts how often an MP lies on the shortest paths between other MPs.
 
@@ -442,7 +425,7 @@ Where:
 * $\sigma_{st}(v)$ is the number of those paths that pass through $v$.
 
 #### 5.2. Distance inversion and pathfinding
-Since our graph edges represent **similarity** (Cosine Similarity), we must transform them into **distances** to find shortest paths. We define the distance $d_{ij}$ as:
+Since our graph edges represent similarity (Cosine Similarity), we must transform them into distances to find shortest paths. We define the distance $d_{ij}$ as:
 
 $$d_{ij} = \frac{1}{\text{weight}_{ij} + \epsilon}$$
 
@@ -450,7 +433,7 @@ This inversion ensures that a high voting similarity results in a short distance
 
 #### 5.3. Results
 
-Betweenness describes the position of an MP in the similarity graph; it is not a measure of political influence.
+Betweenness describes the position of an MP in the similarity graph. It is not a measure of political influence.
 
 | Rank | 15th Leg. (2017-2022) | Group | | 16th Leg. (2022-2024) | Group |
 | :--- | :--- | :---: | :---: | :--- | :---: |
@@ -467,25 +450,19 @@ Betweenness describes the position of an MP in the similarity graph; it is not a
 
 In the 16th Legislature, four of the ten pivots are LIOT MPs and two are non-attached (NI). In the 15th, the ten pivots come from five groups, two from each (UDI_I, GDR, LT, LREM, AGIR-E).
 
-Their participation varies a lot. In the 16th Legislature, Jean-Carles Grelier, Olivier Serva, Jean-Victor Castor, Mansour Kamardine and David Habib each voted on 10% of the ballots or fewer (over the periods they sat), while Emmanuelle Ménard (54%) and Victor Catteau (57%) are among the MPs who vote most often. In the 15th, Jean-Luc Warsmann voted on 3% and Jean-Philippe Nilor on 7%; the eight others on 15% to 32%. The ranking is therefore best read together with participation.
+## 6. Conclusion
 
-## 6. Conclusion:
-
-### 6.1 Main observations
+### Main observations
 
 1. **PC1** separates the groups of the presidential majority from the opposition groups, in both the 15th and the 16th Legislatures. It explains 12.2% and 17.4% of the variance.
 2. **PC2** separates LFI and GDR from LR in the 15th Legislature, and the RN from LFI and the ecologists in the 16th.
 3. **Participation** shapes the plots: MPs who vote on few ballots are close to the point where an MP with no recorded vote would land.
 
-### 6.2 Pivots
-
-Pivots are the MPs with the highest betweenness in the similarity graph. Their participation ranges from 3% to 57% of the ballots, so this ranking should be read together with participation.
-
-### 6.3 Limitations
+### Limitations
 
 PC1 and PC2 together explain 14.5% of the variance in the 15th Legislature and 24.8% in the 16th. The other components are not analyzed here.
 
-### 6.4 Reproducibility
+### Reproducibility
 
 The full source code is available in the GitHub repository: [Networks-Analysis](https://github.com/Ines2r/Networks-Analysis)
 
@@ -525,7 +502,7 @@ For each political group $P$, we compute two distinct metrics:
 | **SOC** | Christine Pires Beaune | Christine Pires Beaune |
 | **LFI** | Mathilde Panot | Mathilde Panot |
 
-**Figure 3:** Key Leaders for the 15th Legislature
+**Figure 5:** Key Leaders for the 15th Legislature
 </div>
 
 <br>
@@ -539,7 +516,7 @@ For each political group $P$, we compute two distinct metrics:
 | **LFI-NUPES** | Anne Stambach-Terrenoir | Anne Stambach-Terrenoir |
 | **LR** | Jean-Jacques Gaultier | Michel Herbillon |
 
-**Figure 4:** Key Leaders for the 16th Legislature
+**Figure 6:** Key Leaders for the 16th Legislature
 </div>
 
 **Participation of the leaders**
@@ -547,13 +524,12 @@ For each political group $P$, we compute two distinct metrics:
 - Claire Guichard (REN) and Victor Catteau (RN) voted on 66% and 57% of the ballots of the 16th Legislature, and Marie-Christine Verdier-Jouclas (LREM) on 44% of those of the 15th: among the highest values of their groups.
 - The LR leaders voted on few ballots: Bernard Deflesselles on 4% in the 15th Legislature (LR median: 12%), Jean-Jacques Gaultier on 7% and Michel Herbillon on 5% in the 16th (LR median: 13%). The ballots they voted on have a high turnout (for Bernard Deflesselles, a median of 517 recorded voters, against 80 over all ballots), and they voted with the majority of their group 87% (Deflesselles) and 94% (Gaultier, Herbillon) of the time.
 - Being a leader in the sense of weighted degree therefore does not require voting often.
-- For comparison, Marine Le Pen voted on 9% of the ballots of the 15th Legislature and 13% of the 16th (RN median: 30%); Jean-Luc Mélenchon on 23% of those of the 15th (LFI median: 20%).
 
-Weighted degree describes the position of an MP in the similarity graph; it is not a measure of political influence.
+Weighted degree describes the position of an MP in the similarity graph: it is not a measure of political influence.
 
 ### Appendix B: Architecture and implementation of data retrieval
 
-### 1 Data Source and API
+#### 1 Data Source and API
 
 **Primary source:** NosDéputés.fr, a freely accessible collaborative database, fed by the official data of the French National Assembly via its XML export protocols.
 
@@ -564,9 +540,9 @@ https://www.nosdeputes.fr/{LEGISLATURE}/scrutin/{SCRUTIN_ID}/xml
 ```
 
 where `LEGISLATURE` $\in \{15, 16\}$ and `SCRUTIN_ID` is the numerical identifier of the vote.
-Unfortunately, the API hasn't the same amount of data for previous legislatures. For the 14th legislature, we found an archive on [Asssemblée Nationale](https://data.assemblee-nationale.fr/).
+Unfortunately, the API does not have as much data for previous legislatures. For the 14th legislature, we found an archive on [Assemblée Nationale](https://data.assemblee-nationale.fr/).
 
-### 2 Parallel download protocol
+#### 2 Parallel download protocol
 
 To accelerate data collection (approx 4,000 ballot votes), we use a **ThreadPoolExecutor** with up to 10 concurrent workers.
 
@@ -577,7 +553,7 @@ To accelerate data collection (approx 4,000 ballot votes), we use a **ThreadPool
 
 Each record: `{depute, group, position, scrutin_id}`
 
-### 3 Transformation into a pivot matrix
+#### 3 Transformation into a pivot matrix
 
 The raw list of votes is transformed into a **sparse matrix**:
 
